@@ -3,7 +3,7 @@
 using namespace std;
 
 /// <summary> 
-/// add the variables we will use. We call the class “DateTime” because in it we will determine the date we need
+/// add the variables we will use. We call the class вЂњDateTimeвЂќ because in it we will determine the date we need
 /// </summary> 
 class DateTime
 {
@@ -145,7 +145,7 @@ public:
     }
 };
 
-// перевантаження для cin >> date time
+// РїРµСЂРµРІР°РЅС‚Р°Р¶РµРЅРЅСЏ РґР»СЏ cin >> date time
 istream& operator >> (istream& cin, DateTime& s)
 {
     int day;
@@ -166,7 +166,7 @@ istream& operator >> (istream& cin, DateTime& s)
     return cin;
 }
 
-// перевантаження для cout << date time
+// РїРµСЂРµРІР°РЅС‚Р°Р¶РµРЅРЅСЏ РґР»СЏ cout << date time
 ostream& operator << (ostream& cout, const DateTime& s)
 {
     cout << "Day of study start: " << s.GetDay() << "\n";
@@ -178,7 +178,7 @@ ostream& operator << (ostream& cout, const DateTime& s)
 ////////////////////////////////////////////////////// 
 
 /// <summary>
-/// add the variables we will use. We call the class “Student” because in it we will describe student's personal information
+/// add the variables we will use. We call the class вЂњStudentвЂќ because in it we will describe student's personal information
 /// </summary>
 class Student
 {
@@ -347,7 +347,7 @@ public:
     }
 
     /// <summary>
-    /// а method that allows you to change a student's last name
+    /// Р° method that allows you to change a student's last name
     /// </summary>
     /// <param name="surname">some new value for student surname</param>
     void SetSurname(string surname)
@@ -365,7 +365,7 @@ public:
     }
 
     /// <summary>
-    ///  а method that allows you to change a student's father name
+    ///  Р° method that allows you to change a student's father name
     /// </summary>
     /// <param name="father_name"></param>
     void SetFatherName(string father_name) {
@@ -381,7 +381,7 @@ public:
     }
 
     /// <summary>
-    /// а method that allows you to change a student's address
+    /// Р° method that allows you to change a student's address
     /// </summary>
     /// <param name="address"></param>
     void SetAddress(string address) {
@@ -397,7 +397,7 @@ public:
     }
 
     /// <summary>
-    /// а method that allows you to change a student's phone number
+    /// Р° method that allows you to change a student's phone number
     /// </summary>
     /// <param name="phone_number"></param>
     void SetPhoneNumber(string phone_number) {
@@ -728,15 +728,15 @@ bool operator<(const Student& left, const Student& right)
     return left.GetAverageHometaskRate() < right.GetAverageHometaskRate();
 }
 
-// перевантаження для cin >> student
+// РїРµСЂРµРІР°РЅС‚Р°Р¶РµРЅРЅСЏ РґР»СЏ cin >> student
 istream& operator >> (istream& cin, Student& s)
 {
-    string name; // локальна тимчасова змiнна
+    string name; // Р»РѕРєР°Р»СЊРЅР° С‚РёРјС‡Р°СЃРѕРІР° Р·РјiРЅРЅР°
     cout << "Enter student's name: ";
     cin >> name;
     s.SetName(name);
 
-    string surname; // ще одна локальна тимчасова змiнна
+    string surname; // С‰Рµ РѕРґРЅР° Р»РѕРєР°Р»СЊРЅР° С‚РёРјС‡Р°СЃРѕРІР° Р·РјiРЅРЅР°
     cout << "Enter student's surname: ";
     cin >> surname;
     s.SetSurname(surname);
@@ -773,7 +773,7 @@ istream& operator >> (istream& cin, Student& s)
     return cin;
 }
 
-// перевантаження для cout << student
+// РїРµСЂРµРІР°РЅС‚Р°Р¶РµРЅРЅСЏ РґР»СЏ cout << student
 ostream& operator << (ostream& cout, const Student& s)
 {
     cout << "Student name: " << s.GetName() << "\n";
@@ -799,8 +799,8 @@ class Group
     }
 
 public:
-    /*friend istream& operator>>(istream& cin, Group& s);
-    friend ostream& operator<<(ostream& cout, Group& s);*/
+    friend istream& operator>>(istream& cin, Group& s);
+    friend ostream& operator<<(ostream& cout, Group& s);
     Group() : Group(0) {}
     /*Group()
     {
@@ -1020,7 +1020,7 @@ public:
         }
 
         int lowestIndex = 0;
-        double lowestAverage = students[0]->GetHometaskAverageRate(); // 7) теперь тут красивый вызов метода из класса Студент :)
+        double lowestAverage = students[0]->GetHometaskAverageRate(); // 7) С‚РµРїРµСЂСЊ С‚СѓС‚ РєСЂР°СЃРёРІС‹Р№ РІС‹Р·РѕРІ РјРµС‚РѕРґР° РёР· РєР»Р°СЃСЃР° РЎС‚СѓРґРµРЅС‚ :)
 
         for (int i = 1; i < students_count; i++)
         {
@@ -1104,15 +1104,15 @@ bool operator != (const Group& left, const Group& right)
     return left.getGroupSize() != right.getGroupSize();
 }
 
-// перевантаження для cin >> group
+// РїРµСЂРµРІР°РЅС‚Р°Р¶РµРЅРЅСЏ РґР»СЏ cin >> group
 istream& operator >> (istream& cin, Group& s)
 {
-    string group_name; // локальна тимчасова змiнна
+    string group_name; // Р»РѕРєР°Р»СЊРЅР° С‚РёРјС‡Р°СЃРѕРІР° Р·РјiРЅРЅР°
     cout << "Enter the group name: ";
     cin >> group_name;
     s.SetGroupName(group_name);
 
-    int course_number; // ще одна локальна тимчасова змiнна
+    int course_number; // С‰Рµ РѕРґРЅР° Р»РѕРєР°Р»СЊРЅР° С‚РёРјС‡Р°СЃРѕРІР° Р·РјiРЅРЅР°
     cout << "Enter the course number: ";
     cin >> course_number;
     s.SetCourseNumber(course_number);
@@ -1132,7 +1132,7 @@ istream& operator >> (istream& cin, Group& s)
     return cin;
 }
 
-// перевантаження для cout << group
+// РїРµСЂРµРІР°РЅС‚Р°Р¶РµРЅРЅСЏ РґР»СЏ cout << group
 ostream& operator << (ostream& cout, const Group& s)
 {
     cout << "Group name: " << s.GetGroupName() << "\n";
@@ -1154,8 +1154,8 @@ ostream& operator << (ostream& cout, const Group& s)
 
 class Fraction
 {
-    int numerator; // числитель
-    int denominator; // знаменатель
+    int numerator; // С‡РёСЃР»РёС‚РµР»СЊ
+    int denominator; // Р·РЅР°РјРµРЅР°С‚РµР»СЊ
 
 public:
     Fraction();
