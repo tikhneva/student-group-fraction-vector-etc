@@ -1,1 +1,1 @@
-# static fields and methods 161023
+# student group fraction vector etc
