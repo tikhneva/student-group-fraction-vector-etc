@@ -158,8 +158,9 @@ ostream& operator << (ostream& cout, const DateTime& s)
 /// </summary>
 class Student
 {
+//private:
+    //static int count;
     static unsigned int count;
-
     string name;
     string surname;
     string father_name;
@@ -187,8 +188,7 @@ public:
         return count;
     }
 
-    Student()
-        : Student("Minho", "Lee", "Lee Know", { 25, 10, 1998 }, "Seoul", "0325112014", { 1, 9, 2022 }) {}
+    Student() : Student("Minho", "Lee", "Lee Know", { 25, 10, 1998 }, "Seoul", "0325112014", { 1, 9, 2022 }) {}
 
     Student(string name, string surname, string father_name, DateTime birthday, string address, string phone_number, DateTime study_start)
         : name(name), surname(surname), father_name(father_name), birthday(birthday), address(address),
@@ -198,77 +198,98 @@ public:
         count++;
     }
 
+    Student(string value)
+        : Student()
+    {
+        SetName(value);
+        SetSurname(value);
+        SetFatherName(value);
+        SetAddress(value);
+    }
     Student(const Student& original)
-        : name(original.name), surname(original.surname), father_name(original.father_name),
-        address(original.address), phone_number(original.phone_number), birthday(original.birthday),
-        study_start(original.study_start), age(original.age), home_task_average_rate(original.home_task_average_rate),
-        hometask_rates_count(original.hometask_rates_count), practice_rates_count(original.practice_rates_count),
-        exam_rates_count(original.exam_rates_count)
+        : Student()
     {
         count++;
 
-        if (original.hometask_rates != nullptr)
-        {
-            this->hometask_rates = new int[this->hometask_rates_count];
-            for (int i = 0; i < this->hometask_rates_count; i++)
-            {
-                this->hometask_rates[i] = original.hometask_rates[i];
-            }
-        }
+        this->name = original.name;
+        this->surname = original.surname;
+        this->father_name = original.father_name;
+        this->address = original.address;
+        this->phone_number = original.phone_number;
+        this->birthday = original.birthday;
+        this->study_start = original.study_start;
+        this->age = original.age;
+        this->home_task_average_rate = original.home_task_average_rate;
+        this->hometask_rates_count = original.hometask_rates_count;
+        this->practice_rates_count = original.practice_rates_count;
+        this->exam_rates_count = original.exam_rates_count;
 
-        if (original.practice_rates != nullptr)
+    if (original.hometask_rates != nullptr)
+    {
+        this->hometask_rates = new int[this->hometask_rates_count];
+        for (int i = 0; i < this->hometask_rates_count; i++)
         {
-            this->practice_rates = new int[this->practice_rates_count];
-            for (int i = 0; i < this->practice_rates_count; i++)
-            {
-                this->practice_rates[i] = original.practice_rates[i];
-            }
-        }
-
-        if (original.exam_rates != nullptr)
-        {
-            this->exam_rates = new int[this->exam_rates_count];
-            for (int i = 0; i < this->exam_rates_count; i++)
-            {
-                this->exam_rates[i] = original.exam_rates[i];
-            }
+            this->hometask_rates[i] = original.hometask_rates[i];
         }
     }
 
-    Student(string value)
+    if (original.practice_rates != nullptr)
     {
-        name = value;
+        this->practice_rates = new int[this->practice_rates_count];
+        for (int i = 0; i < this->practice_rates_count; i++)
+        {
+            this->practice_rates[i] = original.practice_rates[i];
+        }
     }
 
-    /// <summary> 
-    ///  Defines a destructor for the class "Student." This destructor checks for allocated memory for the "hometask_rates" array and removes it if there is, preventing a memory leak
-    /// </summary> 
-    ~Student()
+    if (original.exam_rates != nullptr)
     {
-        count--;
-
-        delete[] this->hometask_rates;
-        delete[] this->practice_rates;
-        delete[] this->exam_rates;
+        this->exam_rates = new int[this->exam_rates_count];
+        for (int i = 0; i < this->exam_rates_count; i++)
+        {
+            this->exam_rates[i] = original.exam_rates[i];
+        }
     }
+}
 
-    /// <summary> 
-    /// a method to set the name 
-    /// </summary> 
-    /// <param name="name"></param> 
-    void SetName(string name)
-    {
-        this->name = name;
-    }
+Student(string value)
+{
+    name = value;
+    surname = value;
+    father_name = value;
+    address = value;
+    phone_number = value;
+}
 
-    /// <summary> 
-    /// a method to get the name 
-    /// </summary> 
-    /// <returns></returns> 
-    string GetName() const
-    {
-        return name;
-    }
+/// <summary> 
+///  Defines a destructor for the class "Student." This destructor checks for allocated memory for the "hometask_rates" array and removes it if there is, preventing a memory leak
+/// </summary> 
+~Student()
+{
+    count--;
+
+    delete[] this->hometask_rates;
+    delete[] this->practice_rates;
+    delete[] this->exam_rates;
+}
+
+/// <summary> 
+/// a method to set the name 
+/// </summary> 
+/// <param name="name"></param> 
+void SetName(string name)
+{
+    this->name = name;
+}
+
+/// <summary> 
+/// a method to get the name 
+/// </summary> 
+/// <returns></returns> 
+string GetName() const
+{
+    return name;
+}
 
 public:
 
@@ -769,28 +790,24 @@ public:
     Group(int group_size)
         : group_size(group_size), course_number(2), group_name("OriginalGroupName"), specialization("OriginalSpecialization")
     {
-        SetGroupName(group_name);
-        SetSpecializationGroup(specialization);
+        SetGroupSize(group_size);
+        SetCourseNumber(2);
+        SetGroupName("OriginalGroupName");
+        SetSpecializationGroup("OriginalSpecialization");
         group = new Student[group_size];
     }
 
     Group(int group_size, int course_number, string group_name, string specialization)
     {
-        this->group_size = group_size;
-        this->course_number = course_number;
-        this->group_name = group_name;
-        this->specialization = specialization;
+        SetGroupSize(group_size);
+        SetCourseNumber(course_number);
+        SetGroupName(group_name);
+        SetSpecializationGroup(specialization);
         group = new Student[group_size];
-    }
-    
-    static unsigned int GetGroupCount()
-    {
-        return group_count;
     }
 
     Group(const Group& original)
-        : home_task_average_rate(original.home_task_average_rate), course_number(original.course_number), specialization(original.specialization),
-        group_name(original.group_name), students_count(original.students_count)
+        : Group(original.group_size, original.course_number, original.group_name, original.specialization)
     {
         group_count++;
 
@@ -804,7 +821,7 @@ public:
     ~Group()
     {
         group_count--;
-            delete[] group;
+        delete[] group;
     }
 
     Group& operator=(const Group& original)
