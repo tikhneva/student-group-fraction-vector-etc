@@ -1,4 +1,4 @@
-#include <iostream> 
+#include <iostream>
 #include <string>
 using namespace std;
 
@@ -83,40 +83,16 @@ public:
     {
         return year;
     }
-    DateTime() {
-        //cout << "DateTime c-tor without parameters\n";
-        SetDay(23);
-        SetMonth(3);
-        SetYear(2005);
-    }
 
-    DateTime(int day, int month) {
-        //cout << "DateTime c-tor with 2 parameters\n";
-        SetDay(day);
-        SetMonth(month);
-        SetYear(2005);
-    }
+    DateTime() : day(23), month(3), year(2005) {}
 
-    DateTime(int day, int month, int year)
-    {
-        //cout << "DateTime main c-tor with 3 parameters\n";
-        SetDay(day);
-        SetMonth(month);
-        SetYear(year);
-    }
+    DateTime(int day, int month) : day(day), month(month), year(2005) {}
 
-    DateTime(const DateTime& original)
-    {
-        //cout << "DateTime copy constructor\n";
-        this->day = original.day;
-        this->month = original.month;
-        this->year = original.year;
-    }
+    DateTime(int day, int month, int year) : day(day), month(month), year(year) {}
 
-    ~DateTime() {
-        //cout << "DateTime destructor\n";
-    }
+    DateTime(const DateTime& original) : day(original.day), month(original.month), year(original.year) {}
 
+    ~DateTime() {}
 
     /// <summary>
     /// display our date on the screen
@@ -125,7 +101,7 @@ public:
     {
         cout << "Date: " << day << "." << month << "." << year << endl;
     }
-    string date_to_string()
+    string DateToString()
     {
         string s;
         s += to_string(day);
@@ -212,44 +188,50 @@ public:
     }
 
     Student()
+        : Student("Minho", "Lee", "Lee Know", { 25, 10, 1998 }, "Seoul", "0325112014", { 1, 9, 2022 }) {}
+
+    Student(string name, string surname, string father_name, DateTime birthday, string address, string phone_number, DateTime study_start)
+        : name(name), surname(surname), father_name(father_name), birthday(birthday), address(address),
+        phone_number(phone_number), study_start(study_start), hometask_rates(nullptr), hometask_rates_count(0),
+        practice_rates(nullptr), practice_rates_count(0), exam_rates(nullptr), exam_rates_count(0)
     {
         count++;
-
-        SetName("Minho");
-        SetStudyStart({ 1, 9, 2022 });
     }
 
     Student(const Student& original)
+        : name(original.name), surname(original.surname), father_name(original.father_name),
+        address(original.address), phone_number(original.phone_number), birthday(original.birthday),
+        study_start(original.study_start), age(original.age), home_task_average_rate(original.home_task_average_rate),
+        hometask_rates_count(original.hometask_rates_count), practice_rates_count(original.practice_rates_count),
+        exam_rates_count(original.exam_rates_count)
     {
         count++;
 
-        this->name = original.name;
-        this->surname = original.surname;
-        this->birthday = original.birthday;
-        this->study_start = original.study_start;
-
-        this->hometask_rates_count = original.hometask_rates_count;
-
-        this->hometask_rates = new int[this->hometask_rates_count];
-        for (int i = 0; i < this->hometask_rates_count; i++)
+        if (original.hometask_rates != nullptr)
         {
-            this->hometask_rates[i] = original.hometask_rates[i];
+            this->hometask_rates = new int[this->hometask_rates_count];
+            for (int i = 0; i < this->hometask_rates_count; i++)
+            {
+                this->hometask_rates[i] = original.hometask_rates[i];
+            }
         }
 
-        this->practice_rates_count = original.practice_rates_count;
-
-        this->practice_rates = new int[this->practice_rates_count];
-        for (int i = 0; i < this->practice_rates_count; i++)
+        if (original.practice_rates != nullptr)
         {
-            this->practice_rates[i] = original.practice_rates[i];
+            this->practice_rates = new int[this->practice_rates_count];
+            for (int i = 0; i < this->practice_rates_count; i++)
+            {
+                this->practice_rates[i] = original.practice_rates[i];
+            }
         }
 
-        this->exam_rates_count = original.exam_rates_count;
-
-        this->exam_rates = new int[this->exam_rates_count];
-        for (int i = 0; i < this->exam_rates_count; i++)
+        if (original.exam_rates != nullptr)
         {
-            this->exam_rates[i] = original.exam_rates[i];
+            this->exam_rates = new int[this->exam_rates_count];
+            for (int i = 0; i < this->exam_rates_count; i++)
+            {
+                this->exam_rates[i] = original.exam_rates[i];
+            }
         }
     }
 
@@ -257,20 +239,6 @@ public:
     {
         name = value;
     }
-    /*Student() :Student("Minho", "lee", "Minsung", {25, 10, 1998}, "Seoul", "0325112014", {1, 9, 2022}) {}
-
-    Student(string name, string surname, string father_name, string address, string phone_number) :Student("Minho", "Lee", "Minsung", { 25, 10, 1998 }, "Seoul", "0325112014", { 1, 9, 2022 }) {}
-
-    Student(string name, string surname, string father_name, DateTime birthday, string address, string phone_number, DateTime study_start)
-    {
-        SetName(name);
-        SetSurname(surname);
-        SetFatherName(father_name);
-        SetBirthday(birthday);
-        SetAddress(address);
-        SetPhoneNumber(phone_number);
-        SetStudyStart(study_start);
-    }*/
 
     /// <summary> 
     ///  Defines a destructor for the class "Student." This destructor checks for allocated memory for the "hometask_rates" array and removes it if there is, preventing a memory leak
@@ -279,21 +247,9 @@ public:
     {
         count--;
 
-        if (hometask_rates != nullptr)
-        {
-            delete[] hometask_rates;
-            hometask_rates = nullptr;
-        }
-        if (practice_rates != nullptr)
-        {
-            delete[] practice_rates;
-            practice_rates = nullptr;
-        }
-        if (exam_rates != nullptr)
-        {
-            delete[] exam_rates;
-            exam_rates = nullptr;
-        }
+        delete[] this->hometask_rates;
+        delete[] this->practice_rates;
+        delete[] this->exam_rates;
     }
 
     /// <summary> 
@@ -741,7 +697,7 @@ istream& operator >> (istream& cin, Student& s)
     cin >> surname;
     s.SetSurname(surname);
 
-    string father_name; 
+    string father_name;
     cout << "Enter student's father name: ";
     cin >> father_name;
     s.SetFatherName(father_name);
@@ -785,8 +741,9 @@ unsigned int Student::count = 0;
 
 class Group
 {
-    Student* group;
-    Student** students = nullptr;
+private:
+    static unsigned int group_count;
+    Student* group = nullptr;
     int students_count = 0;
     int group_size;
     string group_name;
@@ -810,9 +767,8 @@ public:
     }*/
 
     Group(int group_size)
+        : group_size(group_size), course_number(2), group_name("OriginalGroupName"), specialization("OriginalSpecialization")
     {
-        this->group_size = group_size;
-        SetCourseNumber(2);
         SetGroupName(group_name);
         SetSpecializationGroup(specialization);
         group = new Student[group_size];
@@ -826,33 +782,30 @@ public:
         this->specialization = specialization;
         group = new Student[group_size];
     }
+    
+    static unsigned int GetGroupCount()
+    {
+        return group_count;
+    }
 
     Group(const Group& original)
+        : home_task_average_rate(original.home_task_average_rate), course_number(original.course_number), specialization(original.specialization),
+        group_name(original.group_name), students_count(original.students_count)
     {
-        //this->home_task_average_rate = original.home_task_average_rate;
-        this->course_number = original.course_number;
-        this->specialization = original.specialization;
-        this->group_name = original.group_name;
-        this->students_count = original.students_count;
+        group_count++;
 
-        this->students = new Student * [this->students_count];
+        this->group = new Student[this->students_count];
         for (int i = 0; i < this->students_count; i++)
         {
-            this->students[i] = original.students[i];
+            this->group[i] = original.group[i];
         }
     }
 
-    /*~Group()
+    ~Group()
     {
-        if (students != nullptr)
-        {
-            for (int i = 0; i < students_count; i++)
-            {
-                delete students[i];
-            }
-            delete[] students;
-        }
-    }*/
+        group_count--;
+            delete[] group;
+    }
 
     Group& operator=(const Group& original)
     {
@@ -876,7 +829,7 @@ public:
         return *this;
     }
 
-    void printGroup()
+    void PrintGroup()
     {
         cout << "Group name: " << group_name << endl;
         cout << "Specialization: " << specialization << endl;
@@ -907,7 +860,7 @@ public:
         }
     }
 
-    int getGroupSize() const
+    int GetGroupSize() const
     {
         return group_size;
     }
@@ -986,15 +939,15 @@ public:
 
     void AddStudent(const Student& new_student)
     {
-        Student** temp = new Student * [students_count + 1];
+        Student* temp = new Student[students_count + 1];
         for (int i = 0; i < students_count; i++)
         {
-            temp[i] = new Student(*students[i]);
+            temp[i] = group[i];
         }
 
-        temp[students_count] = new Student(new_student);
-        delete[] students;
-        students = temp;
+        temp[students_count] = new_student;
+        delete[] group;
+        group = temp;
         students_count++;
     }
 
@@ -1002,7 +955,7 @@ public:
     {
         if (index < students_count)
         {
-            return *students[index];
+            return group[index];
         }
         else
         {
@@ -1010,7 +963,7 @@ public:
             throw "ERROR!";
         }
     }
-   
+
     void RemoveStudentWithMinHomeworkAverage()
     {
         if (students_count == 0)
@@ -1020,11 +973,11 @@ public:
         }
 
         int lowestIndex = 0;
-        double lowestAverage = students[0]->GetHometaskAverageRate(); // 7) теперь тут красивый вызов метода из класса Студент :)
+        double lowestAverage = group[0].GetHometaskAverageRate();
 
         for (int i = 1; i < students_count; i++)
         {
-            double currentAverage = students[i]->GetHometaskAverageRate();
+            double currentAverage = group[i].GetHometaskAverageRate();
             if (currentAverage < lowestAverage)
             {
                 lowestAverage = currentAverage;
@@ -1034,11 +987,11 @@ public:
 
         for (int i = lowestIndex; i < students_count - 1; i++)
         {
-            students[i] = students[i + 1];
+            group[i] = group[i + 1];
         }
         students_count--;
 
-        //cout << "Removed student with the lowest homework average." << endl;
+        // cout << "Removed student with the lowest homework average." << endl;
     }
 
     void GroupMerger(Group& another_group)
@@ -1059,14 +1012,15 @@ public:
     {
         if (index >= 0 && index < students_count)
         {
-            other.AddStudent(*students[index]);
+            other.AddStudent(group[index]);
             for (int i = index; i < students_count - 1; i++)
             {
-                students[i] = students[i + 1];
+                group[i] = group[i + 1];
             }
             students_count--;
         }
     }
+
 
     operator string()
     {
@@ -1087,21 +1041,28 @@ public:
 
             file += group[i].GetSurname();
             file += "Study start: \n";
-            file += group[i].GetStudyStart().date_to_string();
+            file += group[i].GetStudyStart().DateToString();
         }
         return file;
     }
 
+    int GetStudentsCount() const
+    {
+        return students_count;
+    }
+
 };
+
+unsigned int Group::group_count = 0;
 
 bool operator == (const Group& left, const Group& right)
 {
-    return left.getGroupSize() == right.getGroupSize();
+    return left.GetGroupSize() == right.GetGroupSize();
 }
 
 bool operator != (const Group& left, const Group& right)
 {
-    return left.getGroupSize() != right.getGroupSize();
+    return left.GetGroupSize() != right.GetGroupSize();
 }
 
 // перевантаження для cin >> group
@@ -1154,37 +1115,104 @@ ostream& operator << (ostream& cout, const Group& s)
 
 class Fraction
 {
-    int numerator; // числитель
+    int numerator;   // числитель
     int denominator; // знаменатель
 
 public:
-    Fraction();
-    Fraction(int numerator, int denominator);
-    
-    Fraction(int value)
+    Fraction() : numerator(0), denominator(1) {}
+
+    Fraction(int numerator, int denominator) : numerator(numerator), denominator(denominator)
     {
-        numerator = value;
-        denominator = 1;
+        if (denominator == 0)
+        {
+            cout << "ERROR! Denominator can't be zero \n";
+            this->denominator = 1;
+        }
     }
 
-    double GetDecimal() const;
-    void Print() const;
-    void PrintDecimal() const;
+    Fraction(int value) : numerator(value), denominator(1) {}
 
-    static Fraction Sum(const Fraction& left, const Fraction& right);
-    bool GreaterThan(const Fraction& another) const;
-    bool Equals(const Fraction& another) const;
-    bool LessThan(const Fraction& another) const;
+    double GetDecimal() const
+    {
+        return static_cast<double>(numerator) / denominator;
+    }
 
-    int GetNumerator() const;
-    int GetDenominator() const;
-    void SetNumerator(int numerator);
-    void SetDenominator(int denominator);
+    void Print() const
+    {
+        cout << numerator << "/" << denominator;
+    }
+
+    void PrintDecimal() const
+    {
+        cout << GetDecimal();
+    }
+
+    Fraction operator+(const Fraction& other) const
+    {
+        int resultNumerator = numerator * other.denominator + other.numerator * denominator;
+        int resultDenominator = denominator * other.denominator;
+
+        return Fraction(resultNumerator, resultDenominator);
+    }
+
+    Fraction operator-(const Fraction& other) const
+    {
+        int resultNumerator = numerator * other.denominator - other.numerator * denominator;
+        int resultDenominator = denominator * other.denominator;
+
+        return Fraction(resultNumerator, resultDenominator);
+    }
+
+    Fraction operator*(const Fraction& other) const
+    {
+        int resultNumerator = numerator * other.numerator;
+        int resultDenominator = denominator * other.denominator;
+
+        return Fraction(resultNumerator, resultDenominator);
+    }
+
+    Fraction operator/(const Fraction& other) const
+    {
+        int resultNumerator = numerator * other.denominator;
+        int resultDenominator = denominator * other.numerator;
+
+        return Fraction(resultNumerator, resultDenominator);
+    }
+
+    bool operator==(const Fraction& other) const
+    {
+        return numerator * other.denominator == other.numerator * denominator;
+    }
+
+    bool operator!=(const Fraction& other) const
+    {
+        return !(*this == other);
+    }
+
+    bool operator<(const Fraction& other) const
+    {
+        return numerator * other.denominator < other.numerator* denominator;
+    }
+
+    bool operator>(const Fraction& other) const
+    {
+        return numerator * other.denominator > other.numerator * denominator;
+    }
+
+    bool operator<=(const Fraction& other) const
+    {
+        return !(*this > other);
+    }
+
+    bool operator>=(const Fraction& other) const
+    {
+        return !(*this < other);
+    }
 };
 
 int main()
 {
-    setlocale(0, "UKR");
+    //setlocale(0, "UKR");
 
     string name = "Minho";
     Student st = name;
@@ -1220,4 +1248,13 @@ int main()
     cout << s.GetHometasksRatesCount() << "\n";
     cout << s.GetPracticeRatesCount() << "\n";
     cout << s.GetExamRatesCount() << "\n";
+
+    Group group1;
+    Group group2;
+
+    cout << "Number of students in first group: " << group1.GetStudentsCount() << "\n";
+    cout << "Number of students in second group: " << group2.GetStudentsCount() << "\n";
+
+    cout << "Total number of groups: " << Group::GetGroupCount() << "\n";
+
 }
