@@ -84,9 +84,9 @@ public:
         return year;
     }
 
-    DateTime() : day(23), month(3), year(2005) {}
+    DateTime() : DateTime(23, 3, 2005) {}
 
-    DateTime(int day, int month) : day(day), month(month), year(2005) {}
+    DateTime(int day, int month) : DateTime(day, month, 2005) {}
 
     DateTime(int day, int month, int year) : day(day), month(month), year(year) {}
 
@@ -158,8 +158,8 @@ ostream& operator << (ostream& cout, const DateTime& s)
 /// </summary>
 class Student
 {
-//private:
-    //static int count;
+    //private:
+        //static int count;
     static unsigned int count;
     string name;
     string surname;
@@ -191,23 +191,17 @@ public:
     Student() : Student("Minho", "Lee", "Lee Know", { 25, 10, 1998 }, "Seoul", "0325112014", { 1, 9, 2022 }) {}
 
     Student(string name, string surname, string father_name, DateTime birthday, string address, string phone_number, DateTime study_start)
-        : name(name), surname(surname), father_name(father_name), birthday(birthday), address(address),
-        phone_number(phone_number), study_start(study_start), hometask_rates(nullptr), hometask_rates_count(0),
-        practice_rates(nullptr), practice_rates_count(0), exam_rates(nullptr), exam_rates_count(0)
+        : Student(name, surname, father_name, birthday, address, phone_number, study_start, nullptr, 0, nullptr, 0, nullptr, 0)
     {
         count++;
     }
 
-    Student(string value)
-        : Student()
+    Student(string value) :Student()
     {
-        SetName(value);
-        SetSurname(value);
-        SetFatherName(value);
-        SetAddress(value);
+        this->name = value;
     }
+
     Student(const Student& original)
-        : Student()
     {
         count++;
 
@@ -224,72 +218,63 @@ public:
         this->practice_rates_count = original.practice_rates_count;
         this->exam_rates_count = original.exam_rates_count;
 
-    if (original.hometask_rates != nullptr)
-    {
-        this->hometask_rates = new int[this->hometask_rates_count];
-        for (int i = 0; i < this->hometask_rates_count; i++)
+        if (original.hometask_rates != nullptr)
         {
-            this->hometask_rates[i] = original.hometask_rates[i];
+            this->hometask_rates = new int[this->hometask_rates_count];
+            for (int i = 0; i < this->hometask_rates_count; i++)
+            {
+                this->hometask_rates[i] = original.hometask_rates[i];
+            }
+        }
+
+        if (original.practice_rates != nullptr)
+        {
+            this->practice_rates = new int[this->practice_rates_count];
+            for (int i = 0; i < this->practice_rates_count; i++)
+            {
+                this->practice_rates[i] = original.practice_rates[i];
+            }
+        }
+
+        if (original.exam_rates != nullptr)
+        {
+            this->exam_rates = new int[this->exam_rates_count];
+            for (int i = 0; i < this->exam_rates_count; i++)
+            {
+                this->exam_rates[i] = original.exam_rates[i];
+            }
         }
     }
 
-    if (original.practice_rates != nullptr)
+    /// <summary> 
+    ///  Defines a destructor for the class "Student." This destructor checks for allocated memory for the "hometask_rates" array and removes it if there is, preventing a memory leak
+    /// </summary> 
+    ~Student()
     {
-        this->practice_rates = new int[this->practice_rates_count];
-        for (int i = 0; i < this->practice_rates_count; i++)
-        {
-            this->practice_rates[i] = original.practice_rates[i];
-        }
+        count--;
+
+        delete[] this->hometask_rates;
+        delete[] this->practice_rates;
+        delete[] this->exam_rates;
     }
 
-    if (original.exam_rates != nullptr)
+    /// <summary> 
+    /// a method to set the name 
+    /// </summary> 
+    /// <param name="name"></param> 
+    void SetName(string name)
     {
-        this->exam_rates = new int[this->exam_rates_count];
-        for (int i = 0; i < this->exam_rates_count; i++)
-        {
-            this->exam_rates[i] = original.exam_rates[i];
-        }
+        this->name = name;
     }
-}
 
-Student(string value)
-{
-    name = value;
-    surname = value;
-    father_name = value;
-    address = value;
-    phone_number = value;
-}
-
-/// <summary> 
-///  Defines a destructor for the class "Student." This destructor checks for allocated memory for the "hometask_rates" array and removes it if there is, preventing a memory leak
-/// </summary> 
-~Student()
-{
-    count--;
-
-    delete[] this->hometask_rates;
-    delete[] this->practice_rates;
-    delete[] this->exam_rates;
-}
-
-/// <summary> 
-/// a method to set the name 
-/// </summary> 
-/// <param name="name"></param> 
-void SetName(string name)
-{
-    this->name = name;
-}
-
-/// <summary> 
-/// a method to get the name 
-/// </summary> 
-/// <returns></returns> 
-string GetName() const
-{
-    return name;
-}
+    /// <summary> 
+    /// a method to get the name 
+    /// </summary> 
+    /// <returns></returns> 
+    string GetName() const
+    {
+        return name;
+    }
 
 public:
 
@@ -788,7 +773,7 @@ public:
     }*/
 
     Group(int group_size)
-        : group_size(group_size), course_number(2), group_name("OriginalGroupName"), specialization("OriginalSpecialization")
+        : Group(group_size, 2, "OriginalGroupName", "OriginalSpecialization")
     {
         SetGroupSize(group_size);
         SetCourseNumber(2);
@@ -846,7 +831,7 @@ public:
         return *this;
     }
 
-    void PrintGroup()
+    void PrintGroup() const
     {
         cout << "Group name: " << group_name << endl;
         cout << "Specialization: " << specialization << endl;
@@ -1136,9 +1121,9 @@ class Fraction
     int denominator; // знаменатель
 
 public:
-    Fraction() : numerator(0), denominator(1) {}
+    Fraction() : Fraction(0, 1) {}
 
-    Fraction(int numerator, int denominator) : numerator(numerator), denominator(denominator)
+    Fraction(int numerator, int denominator)
     {
         if (denominator == 0)
         {
@@ -1147,7 +1132,7 @@ public:
         }
     }
 
-    Fraction(int value) : numerator(value), denominator(1) {}
+    Fraction(int value) : Fraction(value, 1) {}
 
     double GetDecimal() const
     {
@@ -1272,6 +1257,6 @@ int main()
     cout << "Number of students in first group: " << group1.GetStudentsCount() << "\n";
     cout << "Number of students in second group: " << group2.GetStudentsCount() << "\n";
 
-    cout << "Total number of groups: " << Group::GetGroupCount() << "\n";
+    //cout << "Total number of groups: " << Group::GetGroupCount() << "\n";
 
 }
